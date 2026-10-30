@@ -183,11 +183,17 @@ kasparro_AI/
 │   │   ├── gold_cases.json
 │   │   └── synthetic_cases.json
 │   ├── grader.py
+│   ├── live_repeat.py
+│   ├── live_repeat_results.json
 │   └── README.md
 │
 ├── tests/
 │   ├── test_analysis.py
 │   └── test_reports.py
+│
+├── docs/
+│   ├── Kasparro_Evaluation_Results.pdf
+│   └── Kasparro_Analysis_Output.pdf
 │
 ├── data/
 ├── fixtures/
@@ -196,6 +202,7 @@ kasparro_AI/
 ├── schemas/
 ├── tools/
 │
+├── analysis_output.json
 ├── .env.example
 ├── .gitignore
 ├── pytest.ini
@@ -204,7 +211,7 @@ kasparro_AI/
 └── DECISION_NOTE.md
 ```
 
-The exact supplied pack directories remain unchanged where possible so original evidence and provenance can be traced.
+The supplied/private source data and provenance should remain outside public Git history.
 
 ---
 
@@ -859,8 +866,6 @@ Export Approved Version
 
 Because FastAPI generates the exact request schema from the running code, `/docs` is the authoritative source for payload fields.
 
-The examples below show the workflow.
-
 ---
 
 # 27. Import Dataset
@@ -1058,7 +1063,7 @@ Do not place credentials in source code.
 
 The model adapter is responsible only for semantic interpretation.
 
-All scoring, evidence validation and workflow authorization remain deterministic.
+All scoring, evidence validation, and workflow authorization remain deterministic.
 
 ---
 
@@ -1077,7 +1082,7 @@ Final verified result:
 24 passed
 ```
 
-The software tests cover the required backend behavior.
+The software tests cover required backend behavior.
 
 Analysis tests include:
 
@@ -1210,19 +1215,7 @@ Per-label baseline results:
 
 The replay baseline handles literal brand mention well but misses semantic recommendation and negative-characterization cases.
 
-The live semantic approach therefore improves exact agreement from:
-
-```text
-60.0%
-```
-
-to:
-
-```text
-78.6%
-```
-
-on successfully evaluated live gold cases.
+Because one live gold case was a non-success, the 60.0% and 78.6% figures are not treated as a perfectly matched statistical benchmark. They are used to demonstrate the value and limitations of semantic interpretation.
 
 ---
 
@@ -1269,7 +1262,7 @@ The cases verify:
 - recommendation without mention is rejected;
 - recommendation position without recommendation is rejected.
 
-This includes the required incorrect/unsupported-evidence case.
+This includes an incorrect/unsupported-evidence case.
 
 ---
 
@@ -1300,7 +1293,45 @@ Synthetic cases are clearly separated from the manually labelled supplied-respon
 
 ---
 
-# 43. Full Dataset Results
+# 43. Live Model Repeatability
+
+Five fixed gold cases were executed twice using the same live configuration.
+
+This produced:
+
+```text
+Cases             : 5
+Runs per case     : 2
+Total calls       : 10
+Successful calls  : 7 / 10
+Comparable pairs  : 3 / 5
+Exact agreement   : 3 / 3 comparable pairs
+Average latency   : 7.938 seconds
+Median latency    : 7.666 seconds
+Cost measurement : Unavailable from the adapter
+```
+
+Per-case observations:
+
+```text
+gold-001  AI Mode   T/F/T -> T/F/T       exact pair
+gold-002  AI Mode   T/T/F -> T/T/F       exact pair
+gold-003  AI Mode   T/T/T -> invalid     one failed run
+gold-004  ChatGPT   T/T/F -> T/T/F       exact pair
+gold-005  ChatGPT   invalid -> invalid   two failed runs
+```
+
+The three comparable successful pairs produced identical semantic labels.
+
+However, 3 of the 10 fresh calls failed strict structured-output/evidence validation.
+
+This indicates that the semantic classifications were stable across the comparable valid pairs while structured-output/evidence reliability remains an execution weakness.
+
+Per-request monetary cost was not available from the adapter and is therefore reported as unavailable rather than zero.
+
+---
+
+# 44. Full Dataset Results
 
 Final live run:
 
@@ -1322,7 +1353,7 @@ They are not manufactured into confident zero scores.
 
 ---
 
-# 44. Overall Results
+# 45. Overall Results
 
 Across the 148 successfully analyzed responses:
 
@@ -1342,7 +1373,7 @@ Prompt-category segmentation is necessary.
 
 ---
 
-# 45. Branded Prompts
+# 46. Branded Prompts
 
 For prompts explicitly involving Kasparro:
 
@@ -1363,7 +1394,7 @@ Recognition does not automatically translate into recommendation.
 
 ---
 
-# 46. Discovery Prompts
+# 47. Discovery Prompts
 
 For unbranded discovery prompts:
 
@@ -1388,35 +1419,35 @@ It is not a claim about current AI-engine behavior.
 
 ---
 
-# 47. Engine Comparison — Branded Prompts
+# 48. Engine Comparison — Branded Prompts
 
 ## Google AI Mode
 
 ```text
-Successful  : 24 / 25
-Mentioned   : 100.0%
-Recommended : 25.0%
-Negative    : 33.3%
+Successful   : 24 / 25
+Mentioned    : 100.0%
+Recommended  : 25.0%
+Negative     : 33.3%
 Average score: 34.2
 ```
 
 ## ChatGPT
 
 ```text
-Successful  : 25 / 25
-Mentioned   : 100.0%
-Recommended : 24.0%
-Negative    : 56.0%
+Successful   : 25 / 25
+Mentioned    : 100.0%
+Recommended  : 24.0%
+Negative     : 56.0%
 Average score: 29.6
 ```
 
 ## Gemini
 
 ```text
-Successful  : 24 / 25
-Mentioned   : 87.5%
-Recommended : 29.2%
-Negative    : 12.5%
+Successful   : 24 / 25
+Mentioned    : 87.5%
+Recommended  : 29.2%
+Negative     : 12.5%
 Average score: 41.2
 ```
 
@@ -1424,7 +1455,7 @@ These results compare the archived supplied responses and should not be interpre
 
 ---
 
-# 48. Diagnostic 1 — Organic Discovery Gap
+# 49. Diagnostic 1 — Organic Discovery Gap
 
 ## Recorded pattern
 
@@ -1444,19 +1475,15 @@ This does not establish the cause.
 
 ## Evidence to test
 
+Inspect recurring competitors and source domains across the same discovery prompts.
+
 Repeat the same discovery prompt set after investigating independent category references and authority signals.
 
-Keep:
-
-- prompt set;
-- category version;
-- scoring version;
-
-constant where possible.
+Keep the prompt set, category version, and scoring version constant where possible.
 
 ---
 
-# 49. Diagnostic 2 — Recognition Does Not Consistently Become Recommendation
+# 50. Diagnostic 2 — Recognition Does Not Consistently Become Recommendation
 
 Successful branded responses:
 
@@ -1480,11 +1507,11 @@ Inspect paired examples where Kasparro is:
 - mentioned but not recommended;
 - explicitly recommended.
 
-Compare the evidence and claims supporting those responses.
+Compare trust signals, comparative claims, source support, and recommendation language.
 
 ---
 
-# 50. Diagnostic 3 — Negative Characterization Varies by Engine
+# 51. Diagnostic 3 — Negative Characterization Varies by Engine
 
 Successful branded responses:
 
@@ -1515,7 +1542,7 @@ Cluster the exact negative claims and inspect:
 
 ---
 
-# 51. Remedy 1 — Build Independent Category Authority
+# 52. Remedy 1 — Investigate Category-Level Authority and Discovery Visibility
 
 **Priority:** 1
 
@@ -1523,9 +1550,20 @@ Cluster the exact negative claims and inspect:
 
 Kasparro appeared in none of the 75 successfully analyzed unbranded discovery responses.
 
+## Evidence
+
+The discovery subset produced:
+
+```text
+Mentioned   : 0 / 75
+Recommended : 0 / 75
+```
+
 ## Action
 
-Investigate and strengthen:
+Map recurring competitors and cited domains for the same discovery prompts, then identify evidence gaps Kasparro can substantively address.
+
+Potential areas to investigate include:
 
 - evidence-backed category content;
 - independent references;
@@ -1534,13 +1572,15 @@ Investigate and strengthen:
 
 ## Expected benefit
 
-Provide stronger evidence for answer systems to associate Kasparro with relevant unbranded category questions.
+Produce a defensible explanation of the observed discovery gap and identify evidence that may improve category association.
 
 ## Effort
 
-High.
+Medium to high.
 
 ## Uncertainty
+
+High until source-level comparison is completed.
 
 Retrieval and ranking behavior varies across systems and over time.
 
@@ -1548,11 +1588,11 @@ No ranking improvement is promised.
 
 ## Validation
 
-Repeat the same discovery prompt set and compare inclusion rates using the same category and scoring versions.
+Repeat the same discovery prompt set after evidence-backed changes and compare inclusion using the same category and scoring versions.
 
 ---
 
-# 52. Remedy 2 — Strengthen Recommendation-Oriented Evidence
+# 53. Remedy 2 — Strengthen Recommendation-Oriented Evidence
 
 **Priority:** 2
 
@@ -1560,23 +1600,29 @@ Repeat the same discovery prompt set and compare inclusion rates using the same 
 
 Kasparro is mentioned much more often than it is recommended in successful branded responses.
 
+```text
+Mentioned   : 70 / 73
+Recommended : 19 / 73
+```
+
 ## Action
 
-Investigate:
+Investigate which verifiable proof points distinguish recommended providers, including:
 
 - comparative proof;
 - independent validation;
 - relevant case studies;
 - clearly supported differentiators;
+- trust signals;
 - evidence demonstrating suitability for specific use cases.
 
 ## Expected benefit
 
-Increase the evidence basis for recommendation rather than simple recognition.
+Improve understanding of the gap between brand recognition and recommendation.
 
 ## Effort
 
-High.
+Medium to high.
 
 ## Uncertainty
 
@@ -1584,11 +1630,11 @@ Recommendation behavior differs by engine, and recommendation classification its
 
 ## Validation
 
-Repeat the same branded prompts and compare recommendation rates against the archived baseline.
+Repeat the same branded prompts and track recommendation separately from mention.
 
 ---
 
-# 53. Remedy 3 — Investigate Negative Themes
+# 54. Remedy 3 — Investigate Negative Themes
 
 **Priority:** 3
 
@@ -1600,38 +1646,38 @@ The rate varies substantially by engine.
 
 ## Action
 
-Cluster negative claims and investigate their evidence before deciding whether:
+Cluster negative claims and trace supplied citations where available.
 
-- content clarification;
-- source correction;
-- product documentation;
-- or no action
+Determine whether recurring claims are:
 
-is appropriate.
+- accurate;
+- stale;
+- unsupported;
+- product-related;
+- content-related;
+- or not actionable.
 
 ## Expected benefit
 
-Identify recurring, potentially addressable claims without assuming their cause.
+Prioritize factual issues rather than speculative ranking tactics.
 
 ## Effort
 
-Medium.
+Low to medium.
 
 ## Uncertainty
+
+Medium.
 
 Negative statements may derive from historical, incomplete, or changing external material.
 
 ## Validation
 
-Repeat affected prompts and compare:
-
-- negative rate;
-- claim themes;
-- supporting evidence.
+Maintain a dated claim/source register and repeat affected prompts after evidence-backed corrections.
 
 ---
 
-# 54. Failure → Diagnosis → Change → Regression Protection
+# 55. Failure → Diagnosis → Change → Regression Protection
 
 A real failure was observed during live execution.
 
@@ -1682,7 +1728,7 @@ The remaining failures were preserved rather than hidden.
 
 ---
 
-# 55. Evaluation Limitations
+# 56. Evaluation Limitations
 
 The gold set is intentionally small.
 
@@ -1696,54 +1742,9 @@ An LLM is not used as the sole judge of its own prose.
 
 Expected labels and deterministic checks are stored separately.
 
----
+The live repeatability experiment is also deliberately small.
 
-# 56. Live Model Variability Measurement
-
-The assignment requests that, when model access is available, at least five live/local-model cases be executed twice while recording:
-
-- configuration;
-- variation;
-- latency;
-- available cost.
-
-The primary live analysis has been completed.
-
-A controlled twice-run variability measurement should be recorded here only after it has actually been executed.
-
-Do not manufacture these measurements.
-
-Suggested reporting format:
-
-```text
-Model:
-Prompt version:
-Cases:
-Run A timestamp:
-Run B timestamp:
-
-Case 1:
-  Run A labels:
-  Run B labels:
-  Same/different:
-  Run A latency:
-  Run B latency:
-
-...
-
-Observed label variation:
-Observed evidence variation:
-Average latency:
-Available cost measurement:
-```
-
-If the provider does not expose usable cost information, record:
-
-```text
-Cost measurement unavailable
-```
-
-rather than assuming zero cost.
+Three of ten fresh live calls failed strict structured-output/evidence validation, so the 3/3 comparable-pair agreement should not be interpreted as evidence of universal model stability.
 
 ---
 
@@ -1770,6 +1771,8 @@ __pycache__/
 *.pyc
 *.db
 .pytest_cache/
+data/
+provenance/
 ```
 
 Supplied/private data should not be placed into public Git history.
@@ -1787,9 +1790,11 @@ __pycache__/
 *.db
 .env
 .pytest_cache/
+data/
+provenance/
 ```
 
-If the supplied pack or generated private outputs must remain outside public history, exclude those paths as appropriate for the submission method.
+This keeps local secrets, generated databases, caches, and supplied/private source material out of Git history.
 
 ---
 
@@ -1889,7 +1894,9 @@ The next semantic iteration would therefore tighten the recommendation rubric an
 - weak consideration language;
 - statements that merely list Kasparro as an available option.
 
-This weakness is intentionally visible in the evaluation.
+A second observed reliability risk is structured-output/evidence validity: 3 of 10 calls in the small live-repeatability experiment failed strict validation.
+
+These weaknesses are intentionally visible rather than tuned away against the final evaluation set.
 
 ---
 
@@ -1930,7 +1937,8 @@ The implementation was verified through:
 - deterministic score checks;
 - model-output validation;
 - manually labelled evaluation cases;
-- controlled synthetic cases.
+- controlled synthetic cases;
+- live repeatability measurements.
 
 The final automated backend test suite passes:
 
@@ -1944,23 +1952,21 @@ Software correctness and semantic model quality are reported separately.
 
 # 64. Active Time
 
-The assignment specifies a maximum of six active hours.
+**Actual active time: approximately 5 hours.**
 
-Record the actual value before submission:
+This includes active time spent on:
 
-```text
-Actual active time: [ENTER ACTUAL ACTIVE TIME]
-```
+- reviewing the supplied requirements and dataset;
+- backend and persistence implementation;
+- semantic-analysis and deterministic-scoring implementation;
+- human-review/version workflow;
+- debugging and automated testing;
+- evaluation and analysis;
+- documentation and final verification.
 
-This should reflect the real time spent on:
+Breaks, inactive waiting time, and unrelated activity were excluded.
 
-- reading;
-- coding;
-- analysis;
-- evaluation;
-- documentation.
-
-Do not replace this with an invented estimate.
+The implementation was intentionally scoped to the assignment's six-active-hour constraint. Optional infrastructure and additional model-quality iteration were omitted in favor of correctness, traceability, evaluation, and human review.
 
 ---
 
@@ -2030,12 +2036,13 @@ SOFTWARE TESTS
 EVALUATION
 ----------
 Gold supplied cases              15
+Successfully evaluated           14 / 15
 Synthetic cases                  6
 All three engines                YES
 Multiple categories              YES
 
-Live exact agreement             78.6%
-Replay exact agreement           60.0%
+Live exact agreement             11 / 14 = 78.6%
+Replay exact agreement           9 / 15 = 60.0%
 
 Mention precision/recall         1.000 / 1.000
 Recommendation precision/recall  0.500 / 1.000
@@ -2045,28 +2052,35 @@ Validation checks                4 / 4
 Synthetic checks                 6 / 6
 Score checks                     9 / 9
 
+LIVE REPEATABILITY
+------------------
+Cases                            5
+Runs per case                    2
+Total live calls                 10
+Successful calls                 7 / 10
+Comparable pairs                 3 / 5
+Exact comparable-pair agreement  3 / 3
+Average latency                  7.938 seconds
+Median latency                   7.666 seconds
+Cost measurement                 Unavailable
+
 DOCUMENTATION
 -------------
 README                           COMPLETE
 Decision note                    INCLUDED SEPARATELY
+Analysis output                  INCLUDED
+Evaluation results               INCLUDED
 AI assistance disclosure         INCLUDED
 Deliberate omissions             INCLUDED
 Exactly-once limitation          INCLUDED
+Active-time disclosure           INCLUDED
 ```
-
-The only values that must not be fabricated before submission are:
-
-```text
-Actual active time
-```
-
-and any live twice-run latency/variation/cost measurements that have not actually been collected.
 
 ---
 
 # 66. Final Result
 
-The implementation demonstrates a complete basic flow from archived AI responses to evidence-grounded semantic analysis, deterministic scoring, diagnostics, remedies, human review and version-safe export.
+The implementation demonstrates a complete flow from archived AI responses to evidence-grounded semantic analysis, deterministic scoring, diagnostics, remedies, human review, and version-safe export.
 
 The central engineering decision remains:
 
@@ -2074,6 +2088,6 @@ The central engineering decision remains:
 
 Semantic models are used where language understanding provides value.
 
-Deterministic software remains responsible for validation, scoring, accounting, persistence, permissions, versioning and export safety.
+Deterministic software remains responsible for validation, scoring, accounting, persistence, permissions, versioning, and export safety.
 
 That separation makes model uncertainty visible while keeping the backend auditable and predictable.
