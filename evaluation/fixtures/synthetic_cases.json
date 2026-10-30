@@ -1,0 +1,104 @@
+{
+  "fixture_version": "synthetic-v1",
+  "description": "Synthetic edge cases used to verify classification boundaries, failure handling, and evidence validation.",
+  "cases": [
+    {
+      "case_id": "synthetic-001",
+      "name": "empty_response",
+      "prompt": "Should I use Kasparro for AI visibility tracking?",
+      "answer": "",
+      "expected": {
+        "status": "skipped",
+        "failure_code": "EMPTY_RESPONSE",
+        "visibility_score": null
+      },
+      "purpose": "Verifies that an empty archived answer is explicitly skipped rather than converted into a successful zero score."
+    },
+    {
+      "case_id": "synthetic-002",
+      "name": "mention_not_recommendation",
+      "prompt": "What AI visibility tools are available?",
+      "answer": "Kasparro is an AI visibility platform. Profound is another platform in this category.",
+      "expected": {
+        "status": "success",
+        "mentioned": true,
+        "recommended": false,
+        "negative": false
+      },
+      "expected_evidence": [
+        "Kasparro is an AI visibility platform."
+      ],
+      "purpose": "Verifies the core scoring distinction that a brand mention must not automatically become a recommendation."
+    },
+    {
+      "case_id": "synthetic-003",
+      "name": "negative_characterization",
+      "prompt": "Should I use Kasparro for this enterprise workflow?",
+      "answer": "Kasparro is limited for this enterprise use case, so I would evaluate alternatives before choosing it.",
+      "expected": {
+        "status": "success",
+        "mentioned": true,
+        "recommended": false,
+        "negative": true
+      },
+      "expected_evidence": [
+        "Kasparro is limited for this enterprise use case"
+      ],
+      "purpose": "Verifies that negative characterization can overlap with a Kasparro mention without becoming a recommendation."
+    },
+    {
+      "case_id": "synthetic-004",
+      "name": "explicit_recommendation",
+      "prompt": "What should I use for AI visibility analysis?",
+      "answer": "Consider Kasparro for AI visibility analysis because it is designed to monitor brand presence across AI engines.",
+      "expected": {
+        "status": "success",
+        "mentioned": true,
+        "recommended": true,
+        "negative": false
+      },
+      "expected_evidence": [
+        "Consider Kasparro for AI visibility analysis"
+      ],
+      "purpose": "Verifies that an explicit recommendation is distinguished from a plain mention."
+    },
+    {
+      "case_id": "synthetic-005",
+      "name": "kasparro_absent",
+      "prompt": "What tools can track AI search visibility?",
+      "answer": "Profound and Otterly can be used to monitor brand visibility across AI search engines.",
+      "expected": {
+        "status": "success",
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "expected_evidence": [],
+      "purpose": "Provides a clean negative control where competitors are present but Kasparro is absent."
+    },
+    {
+      "case_id": "synthetic-006",
+      "name": "unsupported_evidence",
+      "prompt": "Is Kasparro recommended for enterprise AI visibility?",
+      "answer": "Kasparro is an AI visibility platform.",
+      "model_output_under_test": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": false,
+        "evidence": {
+          "mentioned": [
+            "Kasparro is an AI visibility platform."
+          ],
+          "recommended": [
+            "Kasparro is the best enterprise AI visibility platform."
+          ],
+          "negative": []
+        }
+      },
+      "expected": {
+        "validation": "rejected"
+      },
+      "purpose": "Verifies that model evidence not present in the source answer is rejected instead of being accepted as a confident semantic result."
+    }
+  ]
+}

@@ -1,0 +1,241 @@
+{
+  "fixture_version": "gold-v1",
+  "description": "Manually labelled evaluation cases sampled from the supplied archived Kasparro dataset. Labels describe how the archived answer represents Kasparro, not whether the provider's claims are factually correct.",
+  "label_definitions": {
+    "mentioned": "Kasparro is explicitly mentioned in the answer.",
+    "recommended": "The answer positively recommends, endorses, or presents Kasparro as an appropriate option for the user's need.",
+    "negative": "The answer explicitly characterizes Kasparro negatively, expresses material skepticism about it, or prefers an alternative over Kasparro."
+  },
+  "cases": [
+    {
+      "case_id": "gold-001",
+      "response_id": "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2",
+      "prompt_id": "kasparro:ai_shortlisting:001",
+      "engine": "aimode",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": true
+      },
+      "evidence": [
+        "Kasparro is not a widely recognized, top-tier agency or tool in the AI visibility space"
+      ],
+      "notes": "Explicit mention with a clearly negative characterization."
+    },
+    {
+      "case_id": "gold-002",
+      "response_id": "57210f17-4436-4356-9f0f-3f6434ef0a6d",
+      "prompt_id": "kasparro:ai_shortlisting:002",
+      "engine": "aimode",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": false
+      },
+      "evidence": [
+        "Yes, Kasparro",
+        "can help an enterprise software brand increase its visibility"
+      ],
+      "notes": "Positive answer presenting Kasparro as suitable for the requested use case."
+    },
+    {
+      "case_id": "gold-003",
+      "response_id": "449f8530-b47a-411c-9bec-1b5b6e0552cb",
+      "prompt_id": "kasparro:ai_shortlisting:003",
+      "engine": "aimode",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": true
+      },
+      "evidence": [
+        "Profound is generally considered superior to smaller, niche alternatives like Kasparro"
+      ],
+      "notes": "A competitor is explicitly preferred over Kasparro."
+    },
+    {
+      "case_id": "gold-004",
+      "response_id": "f5109b67-a854-4fa0-a05f-e9a88b5b3edb",
+      "prompt_id": "kasparro:ai_shortlisting:002",
+      "engine": "chatgpt",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": false
+      },
+      "evidence": [
+        "helping enterprise software brands become more visible in Perplexity answers is one of its core use cases"
+      ],
+      "notes": "Positive qualified recommendation. Caveats about guarantees do not themselves make Kasparro negatively characterized."
+    },
+    {
+      "case_id": "gold-005",
+      "response_id": "0f217f49-ee02-44ea-853d-61fbcc7a9895",
+      "prompt_id": "kasparro:ai_shortlisting:003",
+      "engine": "chatgpt",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": true
+      },
+      "evidence": [
+        "I would lean toward Profound over Kasparro",
+        "Not its primary focus"
+      ],
+      "notes": "Explicit preference for Profound over Kasparro."
+    },
+    {
+      "case_id": "gold-006",
+      "response_id": "fa0dff8e-b96c-49b0-bcf3-0d410451bdf4",
+      "prompt_id": "kasparro:ai_shortlisting:006",
+      "engine": "chatgpt",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": true
+      },
+      "evidence": [
+        "not yet—at least not publicly for Copilot"
+      ],
+      "notes": "Kasparro is mentioned and a requested capability is explicitly described as unavailable or unverified."
+    },
+    {
+      "case_id": "gold-007",
+      "response_id": "b40168e8-acf4-4430-b22d-8c484fab846f",
+      "prompt_id": "kasparro:ai_shortlisting:001",
+      "engine": "gemini",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [
+        "Kasparro AI positions itself as an AI visibility and optimization platform"
+      ],
+      "notes": "Descriptive mention without enough visible evidence to label it as an explicit recommendation."
+    },
+    {
+      "case_id": "gold-008",
+      "response_id": "6b6e79d3-a582-4d23-8fa6-714c9e982af2",
+      "prompt_id": "kasparro:ai_shortlisting:002",
+      "engine": "gemini",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": false
+      },
+      "evidence": [
+        "Yes, Kasparro is designed specifically for this use case"
+      ],
+      "notes": "Strong positive suitability statement."
+    },
+    {
+      "case_id": "gold-009",
+      "response_id": "9630ab41-2e94-4cfc-b22f-478264263a56",
+      "prompt_id": "kasparro:ai_shortlisting:006",
+      "engine": "gemini",
+      "category": "branded",
+      "expected": {
+        "mentioned": true,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [
+        "Kasparro tracks brand visibility, representation, and recommendations across major LLMs and AI search engines"
+      ],
+      "notes": "Positive factual description, but not an explicit recommendation in the visible excerpt."
+    },
+    {
+      "case_id": "gold-010",
+      "response_id": "50ea9a06-36e5-4c74-a6b6-25d981eec70a",
+      "prompt_id": "kasparro:ai_shortlisting:026",
+      "engine": "aimode",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "Unbranded discovery prompt; Kasparro does not appear in the archived answer."
+    },
+    {
+      "case_id": "gold-011",
+      "response_id": "4334ee7a-6315-4312-b0ca-0a58bcd6270c",
+      "prompt_id": "kasparro:ai_shortlisting:027",
+      "engine": "aimode",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "AI visibility tool discovery prompt without Kasparro surfacing."
+    },
+    {
+      "case_id": "gold-012",
+      "response_id": "0e2c8f07-c483-493d-a9fc-467efc857faa",
+      "prompt_id": "kasparro:ai_shortlisting:026",
+      "engine": "chatgpt",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "Unbranded ChatGPT response with no Kasparro mention."
+    },
+    {
+      "case_id": "gold-013",
+      "response_id": "ee8878c5-69b1-41c4-82a0-13a83c237f2f",
+      "prompt_id": "kasparro:ai_shortlisting:027",
+      "engine": "chatgpt",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "Lists competing AI visibility tools while Kasparro does not surface."
+    },
+    {
+      "case_id": "gold-014",
+      "response_id": "a6e9c6c4-1ac1-4f7f-bdc9-35ccca16ca7d",
+      "prompt_id": "kasparro:ai_shortlisting:026",
+      "engine": "gemini",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "Unbranded Gemini discovery response with no Kasparro mention."
+    },
+    {
+      "case_id": "gold-015",
+      "response_id": "874f97b5-f122-4ac0-b53c-c35ddc82291d",
+      "prompt_id": "kasparro:ai_shortlisting:027",
+      "engine": "gemini",
+      "category": "discovery",
+      "expected": {
+        "mentioned": false,
+        "recommended": false,
+        "negative": false
+      },
+      "evidence": [],
+      "notes": "Gemini lists competing GEO platforms without Kasparro surfacing."
+    }
+  ]
+}
