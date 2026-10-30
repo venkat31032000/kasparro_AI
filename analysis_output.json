@@ -8,6 +8,25 @@
     "prompt_version": "semantic-classification-v2",
     "scoring_version": "visibility-v1"
   },
+  "active_time": {
+    "reported": "approximately 5 hours",
+    "hours_approximate": 5.0,
+    "includes": [
+      "requirements and data review",
+      "backend and persistence implementation",
+      "semantic analysis and deterministic scoring implementation",
+      "human-review and version workflow implementation",
+      "debugging and automated testing",
+      "evaluation and analysis",
+      "documentation and final verification"
+    ],
+    "excludes": [
+      "breaks",
+      "inactive waiting time",
+      "unrelated activity"
+    ],
+    "note": "Active time is reported as an approximate good-faith estimate rather than false minute-level precision."
+  },
   "dataset": {
     "prompts": 50,
     "responses": 150,
@@ -126,6 +145,8 @@
         "recommendations": 0,
         "average_visibility_score": 0.0
       },
+      "supporting_response_ids": [],
+      "evidence_note": "This diagnostic is supported by the aggregate absence across all 75 successful discovery responses. No excerpt is presented as evidence of absence because doing so would misrepresent an individual response as proof of the aggregate result.",
       "interpretation": "The strongest visibility gap is discovery rather than recognition. The supplied historical responses recognize Kasparro when explicitly prompted, but Kasparro does not enter the answer set organically for the supplied unbranded category questions.",
       "boundary": "This is a finding about the supplied historical dataset, not a claim about current live AI-engine visibility."
     },
@@ -141,6 +162,11 @@
         "recommendation_rate": 0.26,
         "mention_to_recommendation_gap_percentage_points": 69.9
       },
+      "supporting_response_ids": [
+        "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2",
+        "57210f17-4436-4356-9f0f-3f6434ef0a6d",
+        "f5109b67-a854-4fa0-a05f-e9a88b5b3edb"
+      ],
       "interpretation": "Kasparro is generally recognized when explicitly introduced, but recognition frequently does not translate into an affirmative recommendation. Mention and recommendation therefore need to remain separate visibility signals."
     },
     {
@@ -167,6 +193,9 @@
           "average_visibility_score": 41.2
         }
       },
+      "supporting_response_ids": [
+        "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2"
+      ],
       "interpretation": "The historical answer set does not present a uniform brand narrative across engines. ChatGPT contains materially more negative characterization in the branded subset, making those answer themes a useful target for qualitative investigation."
     }
   ],
@@ -175,6 +204,7 @@
       "case_id": "gold-001",
       "response_id": "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2",
       "engine": "aimode",
+      "excerpt": "Kasparro is not a widely recognized, top-tier agency or tool in the AI visibility space",
       "live_repeat_labels": {
         "run_1": {
           "mentioned": true,
@@ -193,6 +223,7 @@
       "case_id": "gold-002",
       "response_id": "57210f17-4436-4356-9f0f-3f6434ef0a6d",
       "engine": "aimode",
+      "excerpt": "Yes, **Kasparro** —and similar specialized **Perplexity SEO** or **AI Search Optimization** strategies—can help an enterprise software brand increase its visibility, citations, and authority within Perplexity answers.",
       "live_repeat_labels": {
         "run_1": {
           "mentioned": true,
@@ -211,6 +242,8 @@
       "case_id": "gold-004",
       "response_id": "f5109b67-a854-4fa0-a05f-e9a88b5b3edb",
       "engine": "chatgpt",
+      "excerpt": "Yes—based on what Kasparro says it does, helping enterprise software brands become more visible in Perplexity answers is one of its core use cases.",
+      "qualification_excerpt": "No agency or platform can guarantee that Perplexity will cite or recommend a brand for specific queries.",
       "live_repeat_labels": {
         "run_1": {
           "mentioned": true,
@@ -233,6 +266,9 @@
       "linked_diagnostic": 1,
       "rationale": "Kasparro appeared in none of the 75 successful unbranded discovery responses.",
       "action": "Strengthen independently discoverable category-level evidence that connects Kasparro to the problems and comparison criteria represented by the discovery prompts.",
+      "expected_benefit": "Provide stronger evidence for answer systems to associate Kasparro with relevant unbranded category questions and establish a clearer basis for investigating the discovery gap.",
+      "effort": "medium-to-high",
+      "uncertainty": "high",
       "measurement": "Re-run the same versioned discovery prompt set and measure whether unprompted mention and recommendation rates increase."
     },
     {
@@ -241,6 +277,9 @@
       "linked_diagnostic": 2,
       "rationale": "Branded mention rate was 95.9%, while recommendation rate was only 26.0%.",
       "action": "Prioritize verifiable material that answers recommendation criteria directly: differentiated capabilities, concrete use cases, comparisons, implementation evidence, customer outcomes and independently supportable claims.",
+      "expected_benefit": "Create a stronger evidence basis for recommendation rather than simple brand recognition.",
+      "effort": "medium-to-high",
+      "uncertainty": "medium",
       "measurement": "Track recommendation rate separately from mention rate on the same versioned branded prompt set."
     },
     {
@@ -249,6 +288,9 @@
       "linked_diagnostic": 3,
       "rationale": "Negative characterization occurred in 56.0% of successful branded ChatGPT responses versus 33.3% for AI Mode and 12.5% for Gemini.",
       "action": "Review the evidence excerpts attached to negative ChatGPT classifications, cluster recurring themes, verify whether the underlying claims remain accurate, and address factual or evidence gaps where appropriate.",
+      "expected_benefit": "Identify recurring and potentially addressable factual issues without assuming the cause of the observed engine difference.",
+      "effort": "low-to-medium",
+      "uncertainty": "medium",
       "measurement": "Repeat the same historical evaluation methodology on a future comparable capture and track negative characterization by engine."
     }
   ],
@@ -335,6 +377,7 @@
   },
   "live_repeatability": {
     "model": "gpt-6-luna",
+    "prompt_version": "semantic-classification-v2",
     "cases": 5,
     "runs_per_case": 2,
     "planned_calls": 10,
@@ -350,6 +393,27 @@
       "note": "Reliable per-request monetary cost was not exposed by the adapter and was therefore not represented as zero."
     },
     "interpretation": "All three cases with two valid runs produced identical mentioned/recommended/negative labels. However, three of ten calls failed application-level output validation, so repeatability among valid outputs should not be interpreted as perfect end-to-end model reliability."
+  },
+  "failure_diagnosis_change": {
+    "initial_result": {
+      "success": 141,
+      "failed": 9
+    },
+    "diagnosis": "Several failures were caused by semantic outputs whose evidence did not exactly satisfy the evidence validator.",
+    "decision": "Exact evidence validation was retained rather than weakened.",
+    "change": "Invalid semantic model output was made retryable within the bounded retry policy, and the same persisted analysis was resumed.",
+    "final_result": {
+      "success": 148,
+      "failed": 2
+    },
+    "regression_protection": [
+      "successful-result reuse",
+      "duplicate-result prevention",
+      "failure accounting",
+      "unsupported-evidence validation",
+      "model-output validation",
+      "resumable execution"
+    ]
   },
   "known_limitations": [
     "The dataset contains historical engine captures through 31 July 2026; findings should not be presented as measurements of current live AI-engine behavior.",
