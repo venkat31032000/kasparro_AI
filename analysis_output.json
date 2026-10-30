@@ -1,0 +1,369 @@
+{
+  "artifact": "kasparro_ai_visibility_analysis",
+  "artifact_version": "1.0",
+  "analysis": {
+    "analysis_id": "analysis:2f8298d6-d3d0-4ed7-a201-089369d1e273",
+    "execution_mode": "live",
+    "model": "gpt-6-luna",
+    "prompt_version": "semantic-classification-v2",
+    "scoring_version": "visibility-v1"
+  },
+  "dataset": {
+    "prompts": 50,
+    "responses": 150,
+    "engines": [
+      "aimode",
+      "chatgpt",
+      "gemini"
+    ],
+    "responses_per_engine": 50,
+    "branded_responses": 75,
+    "discovery_responses": 75
+  },
+  "accounting": {
+    "total": 150,
+    "success": 148,
+    "failed": 2,
+    "skipped": 0,
+    "accounted": 150,
+    "coverage_rate": 0.9867,
+    "note": "Failed analyses are preserved as failures and are not converted into zero visibility scores."
+  },
+  "overall_results": {
+    "eligible_successful_responses": 148,
+    "mentioned": {
+      "count": 70,
+      "rate": 0.473
+    },
+    "recommended": {
+      "count": 19,
+      "rate": 0.128
+    },
+    "negative": {
+      "count": 25,
+      "rate": 0.169
+    },
+    "average_visibility_score": 17.2,
+    "interpretation_warning": "The overall mention rate must not be interpreted as organic Kasparro visibility because half of the supplied prompts explicitly reference the brand."
+  },
+  "category_results": {
+    "branded": {
+      "total": 75,
+      "successful": 73,
+      "failed": 2,
+      "coverage_rate": 0.9733,
+      "mentioned": {
+        "count": 70,
+        "rate": 0.959
+      },
+      "recommended": {
+        "count": 19,
+        "rate": 0.26
+      },
+      "negative": {
+        "count": 25,
+        "rate": 0.342
+      },
+      "average_visibility_score": 34.9
+    },
+    "discovery": {
+      "total": 75,
+      "successful": 75,
+      "failed": 0,
+      "coverage_rate": 1.0,
+      "mentioned": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "recommended": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "negative": {
+        "count": 0,
+        "rate": 0.0
+      },
+      "average_visibility_score": 0.0
+    }
+  },
+  "branded_engine_comparison": {
+    "aimode": {
+      "successful": 24,
+      "total": 25,
+      "coverage_rate": 0.96,
+      "mention_rate": 1.0,
+      "recommendation_rate": 0.25,
+      "negative_rate": 0.333,
+      "average_visibility_score": 34.2
+    },
+    "chatgpt": {
+      "successful": 25,
+      "total": 25,
+      "coverage_rate": 1.0,
+      "mention_rate": 1.0,
+      "recommendation_rate": 0.24,
+      "negative_rate": 0.56,
+      "average_visibility_score": 29.6
+    },
+    "gemini": {
+      "successful": 24,
+      "total": 25,
+      "coverage_rate": 0.96,
+      "mention_rate": 0.875,
+      "recommendation_rate": 0.292,
+      "negative_rate": 0.125,
+      "average_visibility_score": 41.2
+    }
+  },
+  "diagnostics": [
+    {
+      "priority": 1,
+      "title": "Kasparro does not surface organically in the discovery prompt set",
+      "observation": "Across all 75 successfully analysed unbranded discovery responses, Kasparro was mentioned in 0, recommended in 0, and negatively characterized in 0.",
+      "evidence": {
+        "successful_discovery_responses": 75,
+        "mentions": 0,
+        "recommendations": 0,
+        "average_visibility_score": 0.0
+      },
+      "interpretation": "The strongest visibility gap is discovery rather than recognition. The supplied historical responses recognize Kasparro when explicitly prompted, but Kasparro does not enter the answer set organically for the supplied unbranded category questions.",
+      "boundary": "This is a finding about the supplied historical dataset, not a claim about current live AI-engine visibility."
+    },
+    {
+      "priority": 2,
+      "title": "Explicit brand recognition converts poorly into recommendation",
+      "observation": "Among 73 successfully analysed branded responses, Kasparro was mentioned in 70 but recommended in only 19.",
+      "evidence": {
+        "successful_branded_responses": 73,
+        "mentioned": 70,
+        "mention_rate": 0.959,
+        "recommended": 19,
+        "recommendation_rate": 0.26,
+        "mention_to_recommendation_gap_percentage_points": 69.9
+      },
+      "interpretation": "Kasparro is generally recognized when explicitly introduced, but recognition frequently does not translate into an affirmative recommendation. Mention and recommendation therefore need to remain separate visibility signals."
+    },
+    {
+      "priority": 3,
+      "title": "Negative characterization varies substantially by engine",
+      "observation": "Within successful branded responses, negative characterization was highest for ChatGPT and lowest for Gemini.",
+      "evidence": {
+        "chatgpt": {
+          "negative": 14,
+          "successful": 25,
+          "negative_rate": 0.56,
+          "average_visibility_score": 29.6
+        },
+        "aimode": {
+          "negative": 8,
+          "successful": 24,
+          "negative_rate": 0.333,
+          "average_visibility_score": 34.2
+        },
+        "gemini": {
+          "negative": 3,
+          "successful": 24,
+          "negative_rate": 0.125,
+          "average_visibility_score": 41.2
+        }
+      },
+      "interpretation": "The historical answer set does not present a uniform brand narrative across engines. ChatGPT contains materially more negative characterization in the branded subset, making those answer themes a useful target for qualitative investigation."
+    }
+  ],
+  "case_level_evidence": [
+    {
+      "case_id": "gold-001",
+      "response_id": "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2",
+      "engine": "aimode",
+      "live_repeat_labels": {
+        "run_1": {
+          "mentioned": true,
+          "recommended": false,
+          "negative": true
+        },
+        "run_2": {
+          "mentioned": true,
+          "recommended": false,
+          "negative": true
+        }
+      },
+      "use": "Concrete example of a response where Kasparro is mentioned but not recommended and is negatively characterized."
+    },
+    {
+      "case_id": "gold-002",
+      "response_id": "57210f17-4436-4356-9f0f-3f6434ef0a6d",
+      "engine": "aimode",
+      "live_repeat_labels": {
+        "run_1": {
+          "mentioned": true,
+          "recommended": true,
+          "negative": false
+        },
+        "run_2": {
+          "mentioned": true,
+          "recommended": true,
+          "negative": false
+        }
+      },
+      "use": "Concrete positive recommendation example and repeated-live-run stability check."
+    },
+    {
+      "case_id": "gold-004",
+      "response_id": "f5109b67-a854-4fa0-a05f-e9a88b5b3edb",
+      "engine": "chatgpt",
+      "live_repeat_labels": {
+        "run_1": {
+          "mentioned": true,
+          "recommended": true,
+          "negative": false
+        },
+        "run_2": {
+          "mentioned": true,
+          "recommended": true,
+          "negative": false
+        }
+      },
+      "use": "Concrete ChatGPT recommendation example and repeated-live-run stability check."
+    }
+  ],
+  "remedies": [
+    {
+      "priority": 1,
+      "title": "Build independent category authority for discovery prompts",
+      "linked_diagnostic": 1,
+      "rationale": "Kasparro appeared in none of the 75 successful unbranded discovery responses.",
+      "action": "Strengthen independently discoverable category-level evidence that connects Kasparro to the problems and comparison criteria represented by the discovery prompts.",
+      "measurement": "Re-run the same versioned discovery prompt set and measure whether unprompted mention and recommendation rates increase."
+    },
+    {
+      "priority": 2,
+      "title": "Strengthen recommendation-oriented evidence",
+      "linked_diagnostic": 2,
+      "rationale": "Branded mention rate was 95.9%, while recommendation rate was only 26.0%.",
+      "action": "Prioritize verifiable material that answers recommendation criteria directly: differentiated capabilities, concrete use cases, comparisons, implementation evidence, customer outcomes and independently supportable claims.",
+      "measurement": "Track recommendation rate separately from mention rate on the same versioned branded prompt set."
+    },
+    {
+      "priority": 3,
+      "title": "Investigate negative themes in ChatGPT responses",
+      "linked_diagnostic": 3,
+      "rationale": "Negative characterization occurred in 56.0% of successful branded ChatGPT responses versus 33.3% for AI Mode and 12.5% for Gemini.",
+      "action": "Review the evidence excerpts attached to negative ChatGPT classifications, cluster recurring themes, verify whether the underlying claims remain accurate, and address factual or evidence gaps where appropriate.",
+      "measurement": "Repeat the same historical evaluation methodology on a future comparable capture and track negative characterization by engine."
+    }
+  ],
+  "evaluation": {
+    "gold_fixture_version": "gold-v1",
+    "synthetic_fixture_version": "synthetic-v1",
+    "gold_cases": 15,
+    "synthetic_cases": 6,
+    "live_llm": {
+      "cases": 15,
+      "successfully_evaluated": 14,
+      "non_success": 1,
+      "coverage_rate": 0.933,
+      "exact_case_agreement": {
+        "matched": 11,
+        "evaluated": 14,
+        "rate": 0.786
+      },
+      "labels": {
+        "mentioned": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "agreement": 1.0,
+          "tp": 8,
+          "fp": 0,
+          "fn": 0
+        },
+        "recommended": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "agreement": 0.786,
+          "tp": 3,
+          "fp": 3,
+          "fn": 0
+        },
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "agreement": 0.929,
+          "tp": 3,
+          "fp": 0,
+          "fn": 1
+        }
+      }
+    },
+    "replay_baseline": {
+      "cases": 15,
+      "evaluated": 15,
+      "exact_case_agreement": {
+        "matched": 9,
+        "evaluated": 15,
+        "rate": 0.6
+      },
+      "labels": {
+        "mentioned": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "agreement": 1.0
+        },
+        "recommended": {
+          "precision": 1.0,
+          "recall": 0.0,
+          "agreement": 0.8
+        },
+        "negative": {
+          "precision": 1.0,
+          "recall": 0.25,
+          "agreement": 0.8
+        }
+      }
+    },
+    "deterministic_score_verification": {
+      "passed": 9,
+      "total": 9
+    },
+    "model_output_validation": {
+      "passed": 4,
+      "total": 4
+    },
+    "synthetic_edge_cases": {
+      "passed": 6,
+      "total": 6
+    }
+  },
+  "live_repeatability": {
+    "model": "gpt-6-luna",
+    "cases": 5,
+    "runs_per_case": 2,
+    "planned_calls": 10,
+    "successful_calls": 7,
+    "failed_calls": 3,
+    "comparable_pairs": 3,
+    "exact_label_agreement_pairs": 3,
+    "exact_label_agreement_rate": 1.0,
+    "average_latency_seconds": 7.938,
+    "median_latency_seconds": 7.666,
+    "cost": {
+      "status": "unavailable",
+      "note": "Reliable per-request monetary cost was not exposed by the adapter and was therefore not represented as zero."
+    },
+    "interpretation": "All three cases with two valid runs produced identical mentioned/recommended/negative labels. However, three of ten calls failed application-level output validation, so repeatability among valid outputs should not be interpreted as perfect end-to-end model reliability."
+  },
+  "known_limitations": [
+    "The dataset contains historical engine captures through 31 July 2026; findings should not be presented as measurements of current live AI-engine behavior.",
+    "Half of the supplied prompts are branded, so the overall 47.3% mention rate is not an organic visibility metric.",
+    "The live gold-set evaluation shows recommendation over-classification: recommendation precision was 0.50 despite recall of 1.00.",
+    "The live repeatability experiment produced valid outputs for 7 of 10 calls. Invalid outputs were retained as failures rather than converted into confident classifications.",
+    "The repeatability experiment contains only five cases and is a bounded engineering check, not a statistical characterization of model variance.",
+    "Reliable monetary cost per request was unavailable from the implemented adapter.",
+    "Observed engine differences are descriptive results from the supplied historical dataset and do not by themselves establish why an engine produced a particular answer."
+  ],
+  "next_model_iteration": {
+    "problem": "Recommendation is the weakest evaluated semantic label.",
+    "evidence": "Live gold-set recommendation precision was 0.50 with three false positives.",
+    "proposed_change": "Tighten the recommendation definition in the semantic prompt and add hard-negative examples that distinguish describing, comparing or mentioning Kasparro from actually recommending it.",
+    "regression_requirement": "Re-run the same versioned gold fixture and require recommendation precision to improve without materially degrading recall or the other labels."
+  }
+}
