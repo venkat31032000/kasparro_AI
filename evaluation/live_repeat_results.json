@@ -1,0 +1,193 @@
+{
+  "experiment": "live-model-repeatability",
+  "created_at": "2026-10-30T10:31:06.323898+00:00",
+  "model": "gpt-6-luna",
+  "execution_mode": "live",
+  "configuration": {
+    "timeout_seconds": 30.0,
+    "max_output_tokens": 800,
+    "case_count": 5,
+    "runs_per_case": 2,
+    "total_planned_calls": 10
+  },
+  "cost": {
+    "status": "unavailable",
+    "note": "The adapter does not currently expose provider pricing or per-request monetary cost. Cost is therefore reported as unavailable rather than estimated as zero."
+  },
+  "cases": [
+    {
+      "case_id": "gold-001",
+      "response_id": "a3fdd8bb-bcd9-4608-9786-ad4b3a2c7dc2",
+      "engine": "aimode",
+      "runs": [
+        {
+          "run": 1,
+          "status": "success",
+          "latency_seconds": 6.791,
+          "labels": {
+            "mentioned": true,
+            "recommended": false,
+            "negative": true
+          },
+          "recommendation_position": null,
+          "confidence": 0.99
+        },
+        {
+          "run": 2,
+          "status": "success",
+          "latency_seconds": 7.647,
+          "labels": {
+            "mentioned": true,
+            "recommended": false,
+            "negative": true
+          },
+          "recommendation_position": null,
+          "confidence": 0.99
+        }
+      ],
+      "exact_label_agreement": true,
+      "label_agreement": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": true
+      }
+    },
+    {
+      "case_id": "gold-002",
+      "response_id": "57210f17-4436-4356-9f0f-3f6434ef0a6d",
+      "engine": "aimode",
+      "runs": [
+        {
+          "run": 1,
+          "status": "success",
+          "latency_seconds": 6.008,
+          "labels": {
+            "mentioned": true,
+            "recommended": true,
+            "negative": false
+          },
+          "recommendation_position": null,
+          "confidence": 0.99
+        },
+        {
+          "run": 2,
+          "status": "success",
+          "latency_seconds": 5.081,
+          "labels": {
+            "mentioned": true,
+            "recommended": true,
+            "negative": false
+          },
+          "recommendation_position": null,
+          "confidence": 0.98
+        }
+      ],
+      "exact_label_agreement": true,
+      "label_agreement": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": true
+      }
+    },
+    {
+      "case_id": "gold-003",
+      "response_id": "449f8530-b47a-411c-9bec-1b5b6e0552cb",
+      "engine": "aimode",
+      "runs": [
+        {
+          "run": 1,
+          "status": "success",
+          "latency_seconds": 7.925,
+          "labels": {
+            "mentioned": true,
+            "recommended": true,
+            "negative": true
+          },
+          "recommendation_position": null,
+          "confidence": 0.88
+        },
+        {
+          "run": 2,
+          "status": "failed",
+          "latency_seconds": 13.316,
+          "error_type": "InvalidModelOutputError",
+          "error": "OpenAI returned an empty response."
+        }
+      ],
+      "exact_label_agreement": null,
+      "label_agreement": null
+    },
+    {
+      "case_id": "gold-004",
+      "response_id": "f5109b67-a854-4fa0-a05f-e9a88b5b3edb",
+      "engine": "chatgpt",
+      "runs": [
+        {
+          "run": 1,
+          "status": "success",
+          "latency_seconds": 6.1,
+          "labels": {
+            "mentioned": true,
+            "recommended": true,
+            "negative": false
+          },
+          "recommendation_position": null,
+          "confidence": 0.99
+        },
+        {
+          "run": 2,
+          "status": "success",
+          "latency_seconds": 9.086,
+          "labels": {
+            "mentioned": true,
+            "recommended": true,
+            "negative": false
+          },
+          "recommendation_position": null,
+          "confidence": 0.98
+        }
+      ],
+      "exact_label_agreement": true,
+      "label_agreement": {
+        "mentioned": true,
+        "recommended": true,
+        "negative": true
+      }
+    },
+    {
+      "case_id": "gold-005",
+      "response_id": "0f217f49-ee02-44ea-853d-61fbcc7a9895",
+      "engine": "chatgpt",
+      "runs": [
+        {
+          "run": 1,
+          "status": "failed",
+          "latency_seconds": 7.666,
+          "error_type": "InvalidModelOutputError",
+          "error": "Model returned evidence that does not occur in the archived response."
+        },
+        {
+          "run": 2,
+          "status": "failed",
+          "latency_seconds": 8.985,
+          "error_type": "InvalidModelOutputError",
+          "error": "Model returned evidence that does not occur in the archived response."
+        }
+      ],
+      "exact_label_agreement": null,
+      "label_agreement": null
+    }
+  ],
+  "summary": {
+    "planned_calls": 10,
+    "successful_calls": 7,
+    "failed_calls": 3,
+    "comparable_case_pairs": 3,
+    "exact_label_agreement_cases": 3,
+    "exact_label_agreement_rate": 1.0,
+    "average_latency_seconds": 7.938,
+    "median_latency_seconds": 7.666,
+    "min_latency_seconds": 5.081,
+    "max_latency_seconds": 13.316
+  }
+}
